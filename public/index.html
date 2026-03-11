@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IDF Mission Control</title>
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <style>
+        body { background: #121212; color: #00ff00; font-family: monospace; }
+        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .cam-box { border: 2px solid #333; padding: 10px; background: #1a1a1a; }
+        h3 { margin-top: 0; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <h1>SYSTEM STATUS: MULTI-CAM ACTIVE</h1>
+    <div class="grid">
+        <div class="cam-box">
+            <h3>Drone Feed</h3>
+            <video id="v1" class="video-js vjs-default-skin" controls autoplay muted width="400" height="225">
+                <source src="/hls/drone/index.m3u8" type="application/x-mpegURL">
+            </video>
+        </div>
+        <div class="cam-box">
+            <h3>Fence Sensors</h3>
+            <video id="v2" class="video-js vjs-default-skin" controls autoplay muted width="400" height="225">
+                <source src="/hls/fence/index.m3u8" type="application/x-mpegURL">
+            </video>
+        </div>
+        <div class="cam-box">
+            <h3>Headcam Unit 01</h3>
+            <video id="v3" class="video-js vjs-default-skin" controls autoplay muted width="400" height="225">
+                <source src="/hls/head/index.m3u8" type="application/x-mpegURL">
+            </video>
+        </div>
+    </div>
+    <script src="https://vjs.zencdn.net/7.20.3/video.js"></script>
+    <script>
+        // אתחול כל הנגנים
+        videojs('v1'); videojs('v2'); videojs('v3');
+    </script>
+</body>
+</html>
