@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import './GridCameras.css';
 import VideoPlayer from './VideoPlayer';
-
-const SERVER_URL = 'http://localhost:4000';
+import { SERVER_URL } from '../constants';
 
 function GridCameras() {
   const [streams, setStreams] = useState([]);

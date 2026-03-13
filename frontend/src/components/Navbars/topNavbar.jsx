@@ -1,9 +1,7 @@
 
 import './Navbar.css';
 
-
 function TopNavbar() {
-
   return (
       <header className="top-nav">
         <div className="nav-right">
@@ -18,20 +16,6 @@ function TopNavbar() {
             <a href="#">מסך VOD</a>
             <a href="#">מסך בקרה</a>
           </nav>
-        </div>
-
-        <div className="nav-left">
-          <div className="search-bar">
-            <input type="text" placeholder="חיפוש מצלמה..." />
-            <span className="search-icon">🔍</span>
-          </div>
-          <div className="user-profile">
-            <div className="user-info">
-              <span className="user-name">ישראל ישראלי</span>
-              <span className="user-role">מנהל משמרת</span>
-            </div>
-            <img src="https://ui-avatars.com/api/?name=ישראל+ישראלי&background=0D8ABC&color=fff&rounded=true" alt="User" className="user-avatar" />
-          </div>
         </div>
       </header>
   );
