@@ -63,13 +63,13 @@ export default function VideoPlayer({ streamName, serverUrl }) {
                 {status === 'connecting' && (
                     <div className="video-overlay">
                         <div className="spinner"></div>
-                        <span>Connecting to stream...</span>
+                        <span>מתחבר לשידור...</span>
                     </div>
                 )}
                 {status === 'error' && (
                     <div className="video-overlay error">
                         <span className="error-icon">⚠</span>
-                        <span>Signal lost — reconnecting...</span>
+                        <span>אין קליטה - מתחבר מחדש...</span>
                     </div>
                 )}
             </div>

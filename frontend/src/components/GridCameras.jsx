@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
 import './GridCameras.css';
 import VideoPlayer from './VideoPlayer';
-import { SERVER_URL } from '../constants';
 
 function GridCameras() {
   const [streams, setStreams] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch available streams from the server
-    fetch(`${SERVER_URL}/api/streams`)
-      .then(res => res.json())
-      .then(data => {
-        setStreams(data.streams);
+    fetch(`${import.meta.env.VITE_BACKEND_SERVER_URL}/cameras`) 
+      .then((res) => res.json())
+      .then((data) => {
+        setStreams(data);
         setLoading(false);
       })
-      .catch(() => {
-        // Fallback to default streams if server is unreachable
-        setStreams(['camera1', 'camera2']);
+      .catch((err) => {
+        console.error("Failed to fetch cameras:", err);
         setLoading(false);
       });
   }, []);
@@ -33,9 +30,9 @@ function GridCameras() {
             <div className="streams-grid">
             {streams.map((stream) => (
                 <VideoPlayer
-                key={stream}
-                streamName={stream}
-                serverUrl={SERVER_URL}
+                key={stream.cameraId}
+                streamName={stream.cameraName}
+                serverUrl={import.meta.env.VITE_RMSP_SERVER_URL}
                 />
             ))}
             </div>
