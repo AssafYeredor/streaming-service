@@ -1,24 +1,24 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn } from "typeorm";
 
-@Entity({ name: "segments" }) // שם הטבלה בבסיס הנתונים
+@Entity({ name: "segments" })
 export class Segment {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
 
-    @Index() // אינדקס לחיפוש מהיר לפי מצלמה
-    @Column()
-    cameraId: string;
+    @Index()
+    @Column({ type: "varchar" }) // הוספת סוג מפורשת מונעת את השגיאה שראית
+    cameraId!: string;
 
-    @Column()
-    minioKey: string; // הנתיב המלא לקובץ בתוך ה-Bucket (למשל: streams/cam1/123.ts)
+    @Column({ type: "varchar" }) // הוספת סוג מפורשת
+    minioKey!: string;
 
-    @Index() // אינדקס קריטי לחיפוש טווחי זמן (DVR)
+    @Index()
     @Column({ type: "timestamp with time zone" })
-    startTime: Date;
+    startTime!: Date;
 
     @Column({ type: "float" })
-    duration: number; // אורך הסגמנט בשניות (למשל 1.0)
+    duration!: number;
 
     @CreateDateColumn()
-    createdAt: Date; // עמודה שנוצרת אוטומטית כשהשורה נשמרת - עוזר לדיבאג
+    createdAt!: Date;
 }

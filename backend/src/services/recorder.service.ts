@@ -12,11 +12,11 @@ export function startRTSPRecording(streamId: string, rtspUrl: string) {
     if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
 
     ffmpeg(rtspUrl)
-        .inputOptions(['-rtsp_transport tcp']) // חיבור יציב יותר
+        // .inputOptions(['-rtsp_transport tcp']) // חיבור יציב יותר
         .outputOptions([
             '-f hls',               // פורמט של סגמנטים
             '-hls_time 1',          // כל קובץ יהיה שנייה אחת
-            '-hls_list_size 0',     // שומר את כל הרשימה
+            '-hls_list_size 3',     // שומר את כל הרשימה
             '-segment_format mpegts'
         ])
         .output(path.join(tempDir, 'playlist.m3u8'))
@@ -34,28 +34,39 @@ function watchTempFolder(dir: string, streamId: string) {
         if (filename && filename.endsWith('.ts')) {
             const filePath = path.join(dir, filename);
 
-            try {
-                // 1. קריאת הקובץ מהדיסק
-                const fileBuffer = fs.readFileSync(filePath);
+            // Wait a short moment to ensure ffmpeg has finished writing the segment
+            setTimeout(async () => {
+                try {
+                    // 1. Check if file exists before reading
+                    if (!fs.existsSync(filePath)) return;
 
-                // 2. העלאה ל-Minio (הסרוויס שכבר כתבת!)
-                const key = await uploadSegment(streamId, filename, fileBuffer);
+                    // 2. קריאת הקובץ מהדיסק
+                    const fileBuffer = fs.readFileSync(filePath);
 
-                // 3. שמירה בפוסטגרס (לשימוש ב-DVR)
-                const segmentRepo = AppDataSource.getRepository(Segment);
-                await segmentRepo.save({
-                    cameraId: streamId,
-                    minioKey: key,
-                    startTime: new Date(),
-                    duration: 1.0
-                });
+                    // 3. העלאה ל-Minio 
+                    const key = await uploadSegment(streamId, filename, fileBuffer);
 
-                // 4. מחיקת הקובץ מהתיקייה הזמנית (כדי לא לסתום את הדיסק)
-                fs.unlinkSync(filePath);
-
-            } catch (err) {
-                console.error(`Failed to process segment ${filename}:`, err);
-            }
+                    // 4. שמירה בפוסטגרס (לשימוש ב-DVR)
+                    const segmentRepo = AppDataSource.getRepository(Segment);
+                    await segmentRepo.save({
+                        cameraId: streamId,
+                        minioKey: key,
+                        startTime: new Date(),
+                        duration: 3 // matches -hls_time 1
+                    });
+                } catch (err) {
+                    console.error(`Failed to process segment ${filename}:`, err);
+                } finally {
+                    // 5. מחיקת הקובץ מהתיקייה הזמנית בכל מקרה (כדי לא לסתום את הדיסק)
+                    try {
+                        if (fs.existsSync(filePath)) {
+                            fs.unlinkSync(filePath);
+                        }
+                    } catch (unlinkErr) {
+                        console.error(`Failed to delete temp file ${filePath}:`, unlinkErr);
+                    }
+                }
+            }, 500); // 500ms delay to allow writing to complete
         }
     });
 }

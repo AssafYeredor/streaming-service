@@ -5,16 +5,18 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+import { Segment } from "../entities/Segmant";
+
 export const AppDataSource = new DataSource({
-  type: process.env.DB_TYPE as any, 
+  type: (process.env.DB_TYPE as "postgres") || "postgres", 
   host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || "5432"),
+  port: parseInt(process.env.DB_PORT || "5432", 10),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [__dirname + "/../entities/*.ts"],
+  entities: [Segment],
   ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
 // import { DataSource } from "typeorm";
