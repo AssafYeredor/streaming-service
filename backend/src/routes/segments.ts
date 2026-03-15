@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { uploadSegment } from "../services/s3.service";
+import { uploadSegment } from "../services/minio.service";
 
 const router = Router();
 
