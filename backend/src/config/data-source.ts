@@ -5,10 +5,10 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-import { Segment } from "../entities/Segmant";
+import { Segment } from "../entities/Segment";
 
 export const AppDataSource = new DataSource({
-  type: (process.env.DB_TYPE as "postgres") || "postgres", 
+  type: (process.env.DB_TYPE as "postgres") || "postgres",
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || "5432", 10),
   username: process.env.DB_USERNAME,
@@ -20,7 +20,7 @@ export const AppDataSource = new DataSource({
   ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
 // import { DataSource } from "typeorm";
-// import { Segment } from "../entity/Segment"; 
+// import { Segment } from "../entity/Segment";
 
 // export const AppDataSource = new DataSource({
 //     type: "postgres",
@@ -31,5 +31,5 @@ export const AppDataSource = new DataSource({
 //     database: "video_db",
 //     synchronize: true,
 //     logging: false,
-//     entities: [Segment], 
+//     entities: [Segment],
 // });

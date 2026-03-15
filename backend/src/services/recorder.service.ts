@@ -2,7 +2,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import fs from 'fs';
 import path from 'path';
 import { uploadSegment } from './minio.service';
-import { Segment } from '../entities/Segmant';
+import { Segment } from '../entities/Segment';
 import { AppDataSource } from '../config/data-source';
 
 export function startRTSPRecording(streamId: string, rtspUrl: string) {
