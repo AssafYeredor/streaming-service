@@ -10,7 +10,7 @@ export default function VideoPlayer({ streamName, serverUrl }) {
 
     useEffect(() => {
         const video = videoRef.current;
-        const src = `${serverUrl}/hls/${streamName}/index.m3u8`;
+        const src = `${serverUrl}/${streamName}/index.m3u8`;
 
         if (Hls.isSupported()) {
             const hls = new Hls({
@@ -59,7 +59,7 @@ export default function VideoPlayer({ streamName, serverUrl }) {
     return (
         <div className={`video-player`} ref={containerRef}>
             <div className="video-wrapper">
-                <video ref={videoRef} muted autoPlay playsInline />
+                <video ref={videoRef} muted autoPlay playsInline controls/>
                 {status === 'connecting' && (
                     <div className="video-overlay">
                         <div className="spinner"></div>
