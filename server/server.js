@@ -18,7 +18,7 @@ const streams = ['drone', 'fence', 'head'];
 
 // Create directories for each stream
 streams.forEach(name => {
-    const dir = path.join(__dirname, '../public/hls', name);
+    const dir = path.join(__dirname, './hls', name);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
     // Run FFmpeg for each camera (Commented out temporarily to preserve mock data from the static HLS files)
@@ -37,7 +37,7 @@ streams.forEach(name => {
 });
 
 // Serve the HLS segments as static files from the old public directory
-app.use('/hls', express.static(path.join(__dirname, '../public/hls')));
+app.use('/hls', express.static(path.join(__dirname, './hls')));
 
 // API endpoint to list available streams
 app.get('/api/streams', (req, res) => {
