@@ -15,4 +15,5 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: false,
   entities: [__dirname + "/../entities/*.ts"],
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
