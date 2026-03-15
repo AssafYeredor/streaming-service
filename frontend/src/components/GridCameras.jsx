@@ -17,7 +17,7 @@ function GridCameras() {
       })
       .catch(() => {
         // Fallback to default streams if server is unreachable
-        setStreams(['drone', 'fence', 'head']);
+        setStreams(['camera1', 'camera2']);
         setLoading(false);
       });
   }, []);
